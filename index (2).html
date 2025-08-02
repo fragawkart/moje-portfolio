@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeLaunch - Spersonalizowane Strony Internetowe</title>
+  <meta name="description" content="SafeLaunch - Tworzymy spersonalizowane strony internetowe, które pomagają firmom osiągnąć sukces w cyfrowym świecie.">
+
+  <style>
+  html {
+  scroll-behavior: smooth;
+}
+    /* Reset i podstawowe style */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        /* Kolory */
+        --primary: 59 130 246; /* niebieski #3B82F6 */
+        --primary-glow: 147 197 253; /* jasny niebieski #93C5FD */
+        --background: 8 47 73; /* ciemny niebieski #082F49 */
+        --background-secondary: 15 23 42; /* ciemny #0F172A */
+        --text-primary: 255 255 255; /* biały */
+        --text-secondary: 203 213 225; /* jasny szary */
+        --text-muted: 148 163 184; /* szary */
+        --border: 30 41 59; /* ciemny border */
+        --accent: 6 182 212; /* cyan accent */
+        
+        /* Gradienty */
+        --gradient-hero: linear-gradient(135deg, rgb(var(--background)), rgb(var(--background-secondary)));
+        --gradient-primary: linear-gradient(135deg, rgb(var(--primary)), rgb(var(--primary-glow)));
+        
+        /* Cienie */
+        --shadow-glow: 0 0 40px rgba(var(--primary-glow), 0.4);
+        --shadow-soft: 0 10px 30px -10px rgba(var(--primary), 0.3);
+        --shadow-elegant: 0 20px 60px -10px rgba(0, 0, 0, 0.3);
+        
+        /* Animacje */
+        --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.15s ease-out;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        color: rgb(var(--text-primary));
+        background: var(--gradient-hero);
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    /* Header */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(var(--background), 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(var(--border), 0.3);
+        transition: var(--transition-smooth);
+    }
+
+    .header .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        min-height: 70px;
+    }
+
+    .nav-brand h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: rgb(var(--primary-glow));
+        text-shadow: var(--shadow-glow);
+    }
+
+    .nav-menu {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-link {
+        color: rgb(var(--text-secondary));
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition-fast);
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: rgb(var(--primary-glow));
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: rgb(var(--primary-glow));
+        transition: var(--transition-fast);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .mobile-menu-btn span {
+        width: 25px;
+        height: 2px;
+        background: rgb(var(--text-primary));
+        transition: var(--transition-fast);
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(var(--background), 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(var(--border), 0.3);
+        z-index: 999;
+        padding: 1rem;
+    }
+
+    .mobile-menu.active {
+        display: block;
+    }
+
+    .mobile-nav-link {
+        display: block;
+        color: rgb(var(--text-secondary));
+        text-decoration: none;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(var(--border), 0.3);
+        transition: var(--transition-fast);
+    }
+
+    .mobile-nav-link:hover {
+        color: rgb(var(--primary-glow));
+    }
+
+    /* Hero Section */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding-top: 70px;
+    }
+
+    .hero-bg-decoration {
+        position: absolute;
+        inset: 0;
+        opacity: 0.1;
+        z-index: 0;
+    }
+
+    .decoration-1 {
+        position: absolute;
+        top: 5rem;
+        left: 2.5rem;
+        width: 8rem;
+        height: 8rem;
+        background: rgb(var(--primary));
+        border-radius: 50%;
+        filter: blur(3rem);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .decoration-2 {
+        position: absolute;
+        bottom: 5rem;
+        right: 2.5rem;
+        width: 12rem;
+        height: 12rem;
+        background: rgb(var(--primary-glow));
+        border-radius: 50%;
+        filter: blur(3rem);
+        animation: float 6s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+
+    .hero-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        align-items: center;
+        position: relative;
+        z-index: 10;
+    }
+
+    .hero-text {
+        text-align: center;
+        animation: fadeInLeft 1s ease-out;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+    }
+
+    .title-line {
+        display: block;
+    }
+
+    .primary-glow {
+        color: rgb(var(--primary-glow));
+        text-shadow: var(--shadow-glow);
+    }
+
+    .hero-description {
+        font-size: 1.25rem;
+        color: rgba(var(--text-primary), 0.9);
+        margin-bottom: 2rem;
+        max-width: 32rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-image {
+        animation: fadeInRight 1s ease-out;
+        text-align: center;
+    }
+
+    .hero-img {
+        width: 100%;
+        max-width: 32rem;
+        height: auto;
+        border-radius: 1rem;
+        box-shadow: var(--shadow-elegant);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: var(--transition-smooth);
+        cursor: pointer;
+        border: none;
+        text-decoration: none;
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgb(var(--primary));
+    }
+
+    .btn-lg {
+        height: 2.75rem;
+        padding: 0 2rem;
+        border-radius: 0.5rem;
+    }
+
+    .btn-secondary {
+        background: rgb(var(--primary));
+        color: rgb(var(--text-primary));
+        box-shadow: var(--shadow-glow);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(var(--primary), 0.9);
+        box-shadow: var(--shadow-soft);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline {
+        border: 1px solid rgb(var(--text-primary));
+        color: rgb(var(--text-primary));
+        background: transparent;
+    }
+
+    .btn-outline:hover {
+        background: rgb(var(--text-primary));
+        color: rgb(var(--background));
+    }
+
+    /* Sections */
+    .about, .portfolio {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .about {
+        background: rgba(var(--background-secondary), 0.5);
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: rgb(var(--primary-glow));
+    }
+
+    .section-subtitle {
+        font-size: 1.125rem;
+        color: rgb(var(--text-secondary));
+        max-width: 40rem;
+        margin: 0 auto;
+    }
+
+    /* About Section */
+    .about-content {
+        max-width: 4xl;
+        margin: 0 auto;
+    }
+
+    .about-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding: 2rem;
+        background: rgba(var(--background), 0.3);
+        border-radius: 1rem;
+        border: 1px solid rgba(var(--border), 0.3);
+        transition: var(--transition-smooth);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .about-item:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-soft);
+        border-color: rgba(var(--primary), 0.3);
+    }
+
+    .about-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+    }
+
+    .about-info h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: rgb(var(--primary-glow));
+    }
+
+    .about-info p {
+        color: rgb(var(--text-secondary));
+        line-height: 1.6;
+    }
+
+    /* Portfolio Section */
+    .portfolio-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 6xl;
+        margin: 0 auto;
+    }
+
+    .portfolio-item {
+        background: rgba(var(--background), 0.3);
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid rgba(var(--border), 0.3);
+        transition: var(--transition-smooth);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .portfolio-item:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-elegant);
+        border-color: rgba(var(--primary), 0.3);
+    }
+
+    .portfolio-image {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 16/9;
+    }
+
+    .portfolio-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+    }
+
+    .portfolio-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(var(--background), 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: var(--transition-smooth);
+    }
+
+    .portfolio-item:hover .portfolio-overlay {
+        opacity: 1;
+    }
+
+    .portfolio-item:hover .portfolio-image img {
+        transform: scale(1.1);
+    }
+
+    .portfolio-content {
+        padding: 1.5rem;
+    }
+
+    .portfolio-content h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: rgb(var(--primary-glow));
+    }
+
+    .portfolio-content p {
+        color: rgb(var(--text-secondary));
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+
+    .portfolio-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background: rgba(var(--primary), 0.2);
+        color: rgb(var(--primary-glow));
+        border-radius: 9999px;
+        border: 1px solid rgba(var(--primary), 0.3);
+    }
+
+    /* Footer */
+    .footer {
+        background: var(--gradient-hero);
+        color: rgb(var(--text-primary));
+        padding: 3rem 0;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+        margin-bottom: 1rem;
+    }
+
+    .footer-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: rgb(var(--primary-glow));
+    }
+
+    .footer-description {
+        color: rgba(var(--text-primary), 0.8);
+        margin-bottom: 1rem;
+    }
+
+    .footer-links {
+        list-style: none;
+    }
+
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+        color: rgba(var(--text-primary), 0.8);
+        text-decoration: none;
+        transition: var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+        color: rgb(var(--primary-glow));
+    }
+
+    .footer-contact p {
+        color: rgba(var(--text-primary), 0.8);
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(var(--text-primary), 0.2);
+        padding-top: 2rem;
+        text-align: center;
+        color: rgba(var(--text-primary), 0.6);
+    }
+
+    /* Animacje */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (min-width: 640px) {
+        .hero-buttons {
+            flex-direction: row;
+        }
+        
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 768px) {
+        .hero-title {
+            font-size: 4rem;
+        }
+        
+        .portfolio-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .hero-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .hero-text {
+            text-align: left;
+        }
+        
+        .hero-title {
+            font-size: 4.5rem;
+        }
+        
+        .hero-description {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .hero-buttons {
+            justify-content: flex-start;
+        }
+        
+        .footer-content {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .portfolio-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-menu {
+            display: none;
+        }
+        
+        .mobile-menu-btn {
+            display: flex;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .about-item {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+      <div class="container">
+          <div class="nav-brand">
+              <h2>SafeLaunch</h2>
+          </div>
+          <nav class="nav-menu">
+              <a href="#about" class="nav-link">O nas</a>
+              <a href="#portfolio" class="nav-link">Portfolio</a>
+              <a href="#contact" class="nav-link">Kontakt</a>
+          </nav>
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+              <span></span>
+              <span></span>
+              <span></span>
+          </button>
+      </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+      <a href="#about" class="mobile-nav-link">O nas</a>
+      <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+      <a href="#contact" class="mobile-nav-link">Kontakt</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+      <div class="hero-bg-decoration">
+          <div class="decoration-1"></div>
+          <div class="decoration-2"></div>
+      </div>
+      
+      <div class="container">
+          <div class="hero-content">
+              <div class="hero-text">
+                  <h1 class="hero-title">
+                      <span class="title-line">Tworzymy</span>
+                      <span class="title-line primary-glow">Wyjątkowe</span>
+                      <span class="title-line">Strony Web</span>
+                  </h1>
+                  
+                  <p class="hero-description">
+                      Spersonalizowane rozwiązania internetowe, które wyróżnią Twoją firmę 
+                      w cyfrowym świecie.
+                  </p>
+                  
+                  <div class="hero-buttons">
+                      <button class="btn btn-secondary btn-lg">Zobacz Portfolio</button>
+                      <button class="btn btn-outline btn-lg">Skontaktuj się</button>
+                  </div>
+              </div>
+              
+              <div class="hero-image">
+                  <img src="public/placeholder.svg" alt="SafeLaunch - Tworzenie stron internetowych" class="hero-img">
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+      <div class="container">
+          <div class="section-header">
+              <h2 class="section-title">O SafeLaunch</h2>
+              <p class="section-subtitle">
+                  Jesteśmy zespołem pasjonatów, którzy tworzą wyjątkowe strony internetowe
+              </p>
+          </div>
+          
+          <div class="about-content">
+              <div class="about-item">
+                  <div class="about-icon">🎯</div>
+                  <div class="about-info">
+                      <h3>Nasza Misja</h3>
+                      <p>
+                          Pomagamy firmom osiągnąć sukces w cyfrowym świecie poprzez tworzenie 
+                          spersonalizowanych stron internetowych, które wyróżniają się na rynku.
+                      </p>
+                  </div>
+              </div>
+              
+              <div class="about-item">
+                  <div class="about-icon">💡</div>
+                  <div class="about-info">
+                      <h3>Nasze Podejście</h3>
+                      <p>
+                          Każdy projekt traktujemy indywidualnie. Słuchamy potrzeb klientów 
+                          i tworzymy rozwiązania, które idealnie pasują do ich biznesu.
+                      </p>
+                  </div>
+              </div>
+              
+              <div class="about-item">
+                  <div class="about-icon">🚀</div>
+                  <div class="about-info">
+                      <h3>Nasze Wartości</h3>
+                      <p>
+                          Jakość, innowacyjność i zadowolenie klienta to podstawy naszej pracy. 
+                          Zawsze dążymy do perfekcji w każdym projekcie.
+                      </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="portfolio">
+      <div class="container">
+          <div class="section-header">
+              <h2 class="section-title">Nasze Portfolio</h2>
+              <p class="section-subtitle">
+                  Poznaj projekty, które stworzyliśmy dla naszych klientów
+              </p>
+          </div>
+          
+          <div class="portfolio-grid">
+              <div class="portfolio-item">
+                  <div class="portfolio-image">
+                      <img src="public/placeholder.svg" alt="Projekt 1">
+                      <div class="portfolio-overlay">
+                          <button class="btn btn-secondary">Zobacz projekt</button>
+                      </div>
+                  </div>
+                  <div class="portfolio-content">
+                      <h3>Elegancka Strona Korporacyjna</h3>
+                      <p>Nowoczesna strona internetowa dla firmy technologicznej z zaawansowanymi animacjami.</p>
+                      <div class="portfolio-tags">
+                          <span class="tag">React</span>
+                          <span class="tag">TypeScript</span>
+                          <span class="tag">Tailwind</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="portfolio-item">
+                  <div class="portfolio-image">
+                      <img src="public/placeholder.svg" alt="Projekt 2">
+                      <div class="portfolio-overlay">
+                          <button class="btn btn-secondary">Zobacz projekt</button>
+                      </div>
+                  </div>
+                  <div class="portfolio-content">
+                      <h3>Sklep E-commerce</h3>
+                      <p>Responsywny sklep internetowy z systemem płatności i zarządzaniem produktami.</p>
+                      <div class="portfolio-tags">
+                          <span class="tag">Next.js</span>
+                          <span class="tag">Stripe</span>
+                          <span class="tag">MongoDB</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="portfolio-item">
+                  <div class="portfolio-image">
+                      <img src="public/placeholder.svg" alt="Projekt 3">
+                      <div class="portfolio-overlay">
+                          <button class="btn btn-secondary">Zobacz projekt</button>
+                      </div>
+                  </div>
+                  <div class="portfolio-content">
+                      <h3>Aplikacja SaaS</h3>
+                      <p>Zaawansowana aplikacja webowa z panelem administracyjnym i API.</p>
+                      <div class="portfolio-tags">
+                          <span class="tag">Vue.js</span>
+                          <span class="tag">Node.js</span>
+                          <span class="tag">PostgreSQL</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="footer">
+      <div class="container">
+          <div class="footer-content">
+              <div class="footer-section">
+                  <h3 class="footer-brand">SafeLaunch</h3>
+                  <p class="footer-description">
+                      Tworzymy spersonalizowane strony internetowe, 
+                      które pomagają firmom osiągnąć sukces w cyfrowym świecie.
+                  </p>
+              </div>
+              
+              <div class="footer-section">
+                  <h4>Usługi</h4>
+                  <ul class="footer-links">
+                      <li><a href="#">Strony internetowe</a></li>
+                      <li><a href="#">Sklepy online</a></li>
+                      <li><a href="#">Aplikacje web</a></li>
+                      <li><a href="#">Konsultacje</a></li>
+                  </ul>
+              </div>
+              
+              <div class="footer-section">
+                  <h4>Firma</h4>
+                  <ul class="footer-links">
+                      <li><a href="#about">O nas</a></li>
+                      <li><a href="#portfolio">Portfolio</a></li>
+                      <li><a href="#">Blog</a></li>
+                      <li><a href="#contact">Kontakt</a></li>
+                  </ul>
+              </div>
+              
+              <div class="footer-section">
+                  <h4>Kontakt</h4>
+                  <div class="footer-contact">
+                      <p>📧 hello@safelaunch.pl</p>
+                      <p>📞 +48 123 456 789</p>
+                      <p>📍 Warszawa, Polska</p>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="footer-bottom">
+              <p>&copy; 2024 SafeLaunch. Wszystkie prawa zastrzeżone.</p>
+          </div>
+      </div>
+  </footer>
+
+  <script>
+    // Toggle mobile menu
+    const btn = document.getElementById('mobileMenuBtn');
+    const menu = document.getElementById('mobileMenu');
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      menu.classList.toggle('active');
+    });
+
+    // Zamknij menu po kliknięciu na link
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        btn.classList.remove('active');
+        menu.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
